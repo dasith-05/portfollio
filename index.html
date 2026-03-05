@@ -4,18 +4,211 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UCSC Dev Collective | 10 Member Portfolio</title>
-    <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --accent: #3b82f6;
+            --text: #f8fafc;
+            --text-dim: #94a3b8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(69, 244, 191, 0.223) 0px, transparent 50%),
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3%3Cfilter id='noiseFilter'%3%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            background-attachment: fixed;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image: radial-gradient(#ffffff0a 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+
+        /* Nav */
+        nav { 
+            height: 80px; 
+            display: flex; 
+            align-items: center; 
+            border-bottom: 1px solid #334155; 
+            position: sticky; 
+            top: 0; 
+            background: rgba(15, 23, 42, 0.8); 
+            z-index: 100; 
+            backdrop-filter: blur(12px) saturate(180%);
+        }
+        .nav-content { width: 100%; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-weight: 800; font-size: 1.5rem; }
+        .logo span { color: var(--accent); }
+        .nav-links { display: flex; list-style: none; gap: 2rem; }
+        .nav-links a { text-decoration: none; color: var(--text-dim); font-weight: 500; transition: 0.3s; }
+        .nav-links a:hover { color: var(--accent); }
+
+        /* Hero */
+        .hero { 
+            padding: 100px 0; 
+            text-align: center; 
+            backdrop-filter: blur(12px) saturate(180%);
+        }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; }
+        .hero h1 span { color: var(--accent); }
+        .hero p { color: var(--text-dim); font-size: 1.2rem; max-width: 600px; margin: 0 auto 2rem; }
+
+        /* Carousel Engine */
+        section { padding: 80px 0; }
+        .section-title { font-size: 2.5rem; margin-bottom: 3rem; text-align: center; }
+
+        .carousel-wrapper { position: relative; display: flex; align-items: center; width: 100%; }
+        .carousel-viewport { overflow: hidden; width: 100%; padding: 20px 0; }
+        .team-track { display: flex; gap: 2rem; transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); width: max-content; }
+
+        /* Centered Card Design */
+        .card {
+            background: var(--card-bg);
+            padding: 3rem 1.5rem;
+            border-radius: 24px;
+            border: 1px solid #334155;
+            display: flex;
+            flex-direction: column;
+            align-items: center;    
+            text-align: center;     
+            width: 320px;           
+            min-height: 450px;      
+            flex-shrink: 0;
+            transition: 0.3s ease;
+            backdrop-filter: blur(12px) saturate(180%);
+        }
+
+        .card:hover { border-color: var(--accent); transform: translateY(-5px); }
+
+        .profile-img {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1.5rem;
+            border: 4px solid var(--accent);
+            background: #334155;
+        }
+
+        .stream-badge {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--accent);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .bio { color: var(--text-dim); font-size: 0.95rem; line-height: 1.6; max-width: 90%; }
+
+        /* Buttons */
+        .nav-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            position: absolute;
+            z-index: 10;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+        .prev { left: -25px; }
+        .next { right: -25px; }
+
+        .btn { 
+            background: var(--accent); 
+            color: white; 
+            padding: 0.8rem 2.5rem; 
+            border-radius: 12px; 
+            text-decoration: none; 
+            font-weight: 600; 
+            display: inline-block;
+            transition: transform 0.3s ease; 
+            margin: 0 10px;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--accent);
+        }
+        .btn:hover { transform: scale(1.05); }
+        .btn:active { transform: scale(0.98); }
+
+        /* Projects */
+        .bg-alt { background: #0b1120; }
+        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .project-card { 
+            background: var(--card-bg); 
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding: 2.5rem; 
+            border-radius: 20px; 
+            border: 1px solid #334155;
+            backdrop-filter: blur(12px) saturate(180%);
+        }
+        .project-tag { color: var(--accent); font-weight: 800; font-size: 0.8rem; margin-bottom: 0.5rem; }
+        
+        /* CLI Window */
+        .cli-window {
+            background: #000;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            margin-top: 15px;
+            flex-grow: 1;
+            overflow-y: auto;
+            text-align: left;
+        }
+        .prompt-dir { color: #28a745; }
+        .status-ok { color: #ffc107; }
+
+        footer { text-align: center; padding: 60px; color: var(--text-dim); border-top: 1px solid #334155; }
+
+        @media (max-width: 768px) {
+            .nav-btn { display: none; }
+            .card { width: 280px; min-height: 400px; }
+            .hero h1 { font-size: 2.5rem; }
+        }
+    </style>
 </head>
 <body>
 
     <nav>
         <div class="container nav-content">
-            <div class="logo">UCSC<span>Collective</span></div>
+            <div class="logo">Group<span> 21</span></div>
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#team">Our Team</a></li>
-                <li><a href="#projects">Projects</a></li>
+                <li><a href="#projects">Prompts</a></li>
             </ul>
         </div>
     </nav>
@@ -23,48 +216,149 @@
     <header id="home" class="hero">
         <div class="container">
             <h1>Innovative <span>Solutions</span> by UCSC Students</h1>
-            <p>A professional collective of 10 Computer Science and ICT students from the University of Colombo School of Computing.</p>
+            <p>10 students, one vision. A vibe-driven portfolio showcasing our rapid builds and collective energy at the University of Colombo School of Computing.</p>
             <a href="#team" class="btn">Meet the Team</a>
+            <a href="#projects" class="btn btn-outline">View Prompts</a>
         </div>
     </header>
 
     <section id="team" class="container">
-        <h2 class="section-title">Our Members</h2>
-        
+        <h2 class="section-title">The Team</h2>
         <div class="carousel-wrapper">
             <button class="nav-btn prev" id="prevBtn" aria-label="Previous Slide">&#10094;</button>
-            
             <div class="carousel-viewport" id="carousel-viewport">
                 <div class="team-track" id="team-container">
                     </div>
             </div>
-            
             <button class="nav-btn next" id="nextBtn" aria-label="Next Slide">&#10095;</button>
         </div>
     </section>
 
     <section id="projects" class="bg-alt">
         <div class="container">
-            <h2 class="section-title">Collaborative Projects</h2>
+            <h2 class="section-title">Prompts Used:</h2>
             <div class="project-grid">
-                <div class="project-card">
-                    <div class="project-tag">Hardware / IoT</div>
-                    <h3>Satellite Tracking System</h3>
-                    <p>Real-time rotatable stand for satellite monitoring using Arduino and NodeMCU.</p>
+                <div class="project-card" style="border-top: 4px solid #007bff;">
+                    <div class="project-tag">HTML Prompts</div>
+                    <h3>Code Generation</h3>
+                    <div class="cli-window">
+                        <code><span class="prompt-dir">~/ucsc/html</span><br>⁠ •⁠ ⁠i want to make a group members portfolio website, can u generate a professional website <br>
+•⁠  ⁠only use html css and js <br>
+•⁠  ⁠Name <br>
+•⁠  ⁠Stream <br>
+Short bio <br>
+Profile image placeholder i want to add these things to my web <br>
+•⁠  ⁠can you add more members to my web, i want 10 members <br>
+•⁠  ⁠can you make full code of the full web <br>
+•⁠  ⁠this is nice, but i want to show these members like slideshow, and i want to scroll it manually and automatically <br>
+<br><span class="status-ok"></span></code>
+                    </div>
                 </div>
-                <div class="project-card">
-                    <div class="project-tag">Web Systems</div>
-                    <h3>Business Management Hub</h3>
-                    <p>Full-stack solution for inventory and employee tracking (Kodithuwakku Tyre Service).</p>
+                <div class="project-card" style="border-top: 4px solid #28a745;">
+                    <div class="project-tag">CSS Prompts</div>
+                    <h3>Technical Writing</h3>
+                    <div class="cli-window">
+                        <code><span class="prompt-dir">~/ucsc/css</span><br>•⁠  ⁠Make the profile cards more interactive when mouse point is hovered <br>
+•⁠  ⁠Make a button next to our team to direct to the prompts used named prompt. <br>
+•⁠  ⁠align profile pictures center and make alignment of each card
+
+<br><span class="status-ok"></span> </code>
+                    </div>
+                </div>
+                <div class="project-card" style="border-top: 4px solid #ffc107;">
+                    <div class="project-tag">JavaScript Prompts</div>
+                    <h3>Debugging Assistance</h3>
+                    <div class="cli-window">
+                        <code><span class="prompt-dir">~/ucsc/js</span><br>•⁠  ⁠Make the navigation smoother <br>
+•⁠  ⁠Enter names and bios using javascript<br><span class="status-ok"></span> </code>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <footer>
-        <p>© 2026 UCSC Dev Collective. All Rights Reserved.</p>
+        <p>©️ 2026 UCSC Dev Collective. All Rights Reserved.</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script>
+        const members = [
+            { name: "Mariyam", stream: "Computer Science", bio: "Undergraduate student exploring frontend frameworks and responsive web design.", image: "https://www.washingtonpost.com/wp-apps/imrs.php?src=https://arc-anglerfish-washpost-prod-washpost.s3.amazonaws.com/public/WZEUY7Q6GMI6ZPVIGCHKCNCZJ4.jpg&w=1800&h=1800" },
+            { name: "Lachitha", stream: "Computer Science", bio: "CS major interested in database management systems and backend logic.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSELM-T0E7oDSx2M-d_PXyXfstMXYSveQzgCg&s" },
+            { name: "Dasith", stream: "Computer Science", bio: "Aspiring developer focused on learning UI/UX principles and modern CSS.", image: "https://content.instructables.com/FYX/OYXR/M6NMUGA6/FYXOYXRM6NMUGA6.jpg" },
+            { name: "Shamal", stream: "Computer Science", bio: "Tech enthusiast studying low-level programming and hardware integration.", image: "https://content.imageresizer.com/images/memes/Annoyed-face-meme-7.jpg" },
+            { name: "Vismi", stream: "Information Systems", bio: "IS student passionate about bridging the gap between business and technology.", image: "https://s2.r29static.com/bin/entry/2ef/x,80/1621852/image.jpg" },
+            { name: "Supun", stream: "Computer Science", bio: "Learning mobile app development and experimenting with cross-platform tools.", image: "https://i.pinimg.com/736x/5b/c6/38/5bc6387e6d8e0e598467bc7d18a377fe.jpg" },
+            { name: "Sakith", stream: "Information Systems", bio: "Undergraduate focused on information security and enterprise systems.", image: "https://i.pinimg.com/1200x/5f/00/27/5f00276cb1bab875e6f4250b21bfac05.jpg" },
+            { name: "Uvindu", stream: "Information Systems", bio: "Student developer interested in network protocols and systems administration.", image: "https://i.pinimg.com/originals/14/2f/a7/142fa7f209297073e4648f11ed842a6a.jpg" },
+            { name: "Pathirana", stream: "Computer Science", bio: "CS undergraduate exploring full-stack development and open-source projects.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRokffqYuoE7_MjWHR7nhqPn5FZPquvFg2kaQ&s" }
+        ];
+
+        let currentIndex = 0;
+        let autoScrollInterval;
+        const scrollSpeed = 3500; 
+
+        function initApp() {
+            const container = document.getElementById('team-container');
+            const viewport = document.getElementById('carousel-viewport');
+            
+            members.forEach(m => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <img src="${m.image}" alt="${m.name}" class="profile-img">
+                    <div class="stream-badge">${m.stream}</div>
+                    <h3>${m.name}</h3>
+                    <p class="bio">${m.bio}</p>
+                `;
+                container.appendChild(card);
+            });
+
+            document.getElementById('nextBtn').addEventListener('click', () => {
+                moveSlide(1);
+                resetTimer();
+            });
+
+            document.getElementById('prevBtn').addEventListener('click', () => {
+                moveSlide(-1);
+                resetTimer();
+            });
+
+            viewport.addEventListener('mouseenter', () => clearInterval(autoScrollInterval));
+            viewport.addEventListener('mouseleave', () => startTimer());
+
+            startTimer();
+        }
+
+        function moveSlide(direction) {
+            const container = document.getElementById('team-container');
+            const card = document.querySelector('.card');
+            if (!card) return;
+
+            const cardWidth = card.offsetWidth + 32; 
+            const viewportWidth = document.getElementById('carousel-viewport').offsetWidth;
+            
+            const visibleCards = Math.floor(viewportWidth / cardWidth);
+            const maxIndex = members.length - (visibleCards > 0 ? visibleCards : 1);
+
+            currentIndex += direction;
+
+            if (currentIndex > maxIndex) currentIndex = 0;
+            if (currentIndex < 0) currentIndex = maxIndex;
+
+            container.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
+        }
+
+        function startTimer() {
+            autoScrollInterval = setInterval(() => moveSlide(1), scrollSpeed);
+        }
+
+        function resetTimer() {
+            clearInterval(autoScrollInterval);
+            startTimer();
+        }
+
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
 </body>
 </html>
